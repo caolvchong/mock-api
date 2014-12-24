@@ -1,0 +1,17 @@
+[
+    {
+        "method": "post",
+        "url": "/login",
+        "response": {
+            "ok": 1
+        }
+    },
+    {
+        "method": "get",
+        "url": "/users/:id",
+        "response": {
+            "name": "tom",
+            "age": 28
+        }
+    }
+]

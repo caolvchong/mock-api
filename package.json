@@ -1,0 +1,40 @@
+{
+    "name": "api-mock",
+    "version": "0.0.1",
+    "description": "use json files to mock apis for front-end development",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/caolvchong/mock-api.git"
+    },
+    "author": {
+        "name": "caolvchong",
+        "email": "caolvchong@gmail.com",
+        "url": "https://caolvchong.github.io/"
+    },
+    "keywords": [
+        "koa",
+        "rest",
+        "mock",
+        "api"
+    ],
+    "homepage": "https://github.com/caolvchong/mock-api",
+    "bugs": {
+        "url": "https://github.com/caolvchong/mock-api/issues"
+    },
+    "engines": {
+        "node": ">=0.11.7"
+    },
+    "main": "index.js",
+    "preferGlobal": "true",
+    "bin": {
+        "mock-api": "shell.js"
+    },
+    "dependencies": {
+        "commander": "~2.5.1",
+        "koa": "~0.13.0",
+        "koa-router": "~3.7.0",
+        "koa-body": "~0.4.0",
+        "koa-cors": "~0.0.14"
+    },
+    "licenses": "MIT"
+}
