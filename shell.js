@@ -2,7 +2,7 @@
 
 var pathUtil = require('path');
 var program = require('commander');
-var pck = require('package.json');
+var pck = require('./package.json');
 var readAPIs = require('./core');
 
 program
