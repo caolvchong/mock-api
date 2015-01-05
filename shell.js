@@ -1,20 +1,58 @@
-#!/usr/bin/env nodemon --harmony -e json
+#!/usr/bin/env node --harmony
 
 var pathUtil = require('path');
 var program = require('commander');
+var nodemon = require('nodemon');
 var pck = require('./package.json');
-var readAPIs = require('./core');
+
+var defaults = {
+    port: 3001,
+    delay: 0,
+    status: 200
+};
 
 program
     .version(pck.version)
     .command('serve [path]')
-    .description('serve the path which includes json files')
-    .option('-p, --port <port>', 'port', 3001)
+    .description('本地API模拟器')
+    .option('-p, --port <port>', '服务器端口，默认' + defaults.port) // 服务端口
+    .option('-d, --delay <delay>', '模拟网络延迟，默认不延迟') // 延迟返回，模仿网络延迟
+    .option('-s, --status <status>', '返回的HTTP状态码，默认' + defaults.status) // 状态码
     .action(function (path, options) {
         path = pathUtil.resolve(__dirname, path || '.');
-        var port = options.port;
-        readAPIs(path, port);
-
+        var port = +options.port || defaults.port;
+        var delay = +options.delay || defaults.delay;
+        var status = +options.status || defaults.status;
+        var params = {
+            path: path,
+            port: port,
+            delay: delay,
+            status: status
+        };
+        var arr = [];
+        for(var key in params) {
+            arr.push('--' + key + ' ' + params[key]);
+        }
+        nodemon({
+            script: 'app.js',
+            exec: 'node --harmony app.js ' + arr.join(' '),
+            watch: path,
+            ext: 'json'
+        }).on('restart', function(files) {
+            files.forEach(function(file) {
+                var date = new Date();
+                console.log('%s:%s:%s.%s - reload %s', date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds(), file);
+            });
+        });
+    })
+    .on('--help', function(){
+        console.log('  Examples:');
+        console.log('');
+        console.log('    $ mock-api serve path/to/folder');
+        console.log('    $ mock-api serve path/to/folder -p 8000');
+        console.log('    $ mock-api serve path/to/folder -p 8000 -d 2000');
+        console.log('    $ mock-api serve path/to/folder -s 400');
+        console.log('');
     });
 
 program.parse(process.argv);
