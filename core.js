@@ -1,15 +1,9 @@
-var koa = require('koa');
-var koaBody = require('koa-body');
-var Router = require('koa-router');
 var fs = require('fs');
 var util = require('util');
-var cors = require('koa-cors');
 
-function readAPIs(path, port) {
-    var app = koa();
-    app.use(cors());
-    app.use(koaBody());
-    app.use(Router(app));
+function readAPIs(app, path, config) {
+    var delay = config.delay;
+    var status = config.status;
 
     fs
         .readdirSync(path)
@@ -23,15 +17,31 @@ function readAPIs(path, port) {
                 }
                 apis.forEach(function (api) {
                     app[api.method](api.url, function*() {
-                        this.body = api.response;
+                        if(api.delay) {
+                            delay = api.delay;
+                        }
+                        if(delay) {
+                            yield function (done) {
+                                setTimeout(done, delay);
+                            };
+                        }
+
+                        if(api.status) {
+                            status = api.status;
+                        }
+                        if(status && status !== 200) {
+                            this.status = status;
+                            this.body = api.error || {message: '默认异常'};
+                        } else {
+                            this.body = api.response;
+                        }
                     });
                 });
             } else if (stat.isDirectory()) {
                 readAPIs(p)
             }
         });
-
-    app.listen(port);
+    return app;
 }
 
 module.exports = readAPIs;
