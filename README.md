@@ -30,8 +30,15 @@ mock-api
 使用[mock-api][]，需要具备：
 
 1. [node.js][]环境，node版本需要 **v0.11.7+**，建议使用[nvm][]进行node的版本管理
-2. 安装[nodemon][]，执行 `npm install -g nodemon` 即可
-3. 安装[mock-api][]，执行 `npm install -g mock-api` 即可
+2. 安装[mock-api][]，执行 `npm install -g mock-api` 即可
+
+## 特点
+
+1. json方式书写接口，简洁明了
+2. 支持跨域访问，让本地无跨域烦恼
+3. 热部署，修改json文件后自动重启服务，省去重复工作
+4. 支持慢速网络模拟，方便前端测试
+5. 错误自定义，便于处理各种协定好的异常
 
 ## 使用
 假设服务端约好了一堆API，我们拿其中一个来示例：
@@ -63,6 +70,31 @@ GET: /users/:id
 ]
 ```
 
+* **method**: 表示请求的类型，一般是 get、post、put、delete中的一种
+* **url**: 请求的路由
+* **response**: 返回的结果体
+
+如果需要模拟网络延迟或者请求失败，可以使用 **delay** 和 **status**、**error**，例如：
+
+```json
+[
+    {
+        "method": "get",
+        "url": "/users/:id",
+        "response": {
+            "id": 1,
+            "name": "tom",
+            "level": 3
+        },
+        "delay": 3000,
+        "status": 400,
+        "error": {
+            "message": "该用户不存在"
+        }
+    }
+]
+```
+
 然后执行：
 
 ```bash
@@ -80,4 +112,23 @@ mock-api serve /path/to/restful -p port
 ```
 
 注意，为了便于开发，建议将上面的 `http://localhost:3001` 进行配置，后期接入真实API则只需要修改一处配置即可。
+
+如果需要统一模拟慢速网络，可以使用** -d ** 参数：
+
+```bash
+mock-api serve /path/to/restful -d 2000
+```
+
+如果需要统一模拟异常，可以使用 ** -s ** 参数：
+
+```bash
+mock-api serve /path/to/restful -s 400
+```
+
+命令行帮助可以通过以下命令查看：
+
+```bash
+mock-api serve -h
+```
+
 
