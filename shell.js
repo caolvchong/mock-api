@@ -19,7 +19,7 @@ program
     .option('-d, --delay <delay>', '模拟网络延迟，默认不延迟') // 延迟返回，模仿网络延迟
     .option('-s, --status <status>', '返回的HTTP状态码，默认' + defaults.status) // 状态码
     .action(function (path, options) {
-        path = pathUtil.resolve(__dirname, path || '.');
+        path = pathUtil.resolve(process.cwd(), path || '.');
         var port = +options.port || defaults.port;
         var delay = +options.delay || defaults.delay;
         var status = +options.status || defaults.status;
@@ -30,7 +30,7 @@ program
             status: status
         };
         var arr = [];
-        for(var key in params) {
+        for (var key in params) {
             arr.push('--' + key + ' ' + params[key]);
         }
         var appFile = pathUtil.resolve(__dirname, 'app.js')
@@ -39,14 +39,14 @@ program
             exec: 'node --harmony ' + appFile + ' ' + arr.join(' '),
             watch: path,
             ext: 'json'
-        }).on('restart', function(files) {
-            files.forEach(function(file) {
+        }).on('restart', function (files) {
+            files.forEach(function (file) {
                 var date = new Date();
                 console.log('%s:%s:%s.%s - reload %s', date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds(), file);
             });
         });
     })
-    .on('--help', function(){
+    .on('--help', function () {
         console.log('  Examples:');
         console.log('');
         console.log('    $ mock-api serve path/to/folder');
