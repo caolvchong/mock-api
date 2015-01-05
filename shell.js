@@ -33,9 +33,10 @@ program
         for(var key in params) {
             arr.push('--' + key + ' ' + params[key]);
         }
+        var appFile = pathUtil.resolve(__dirname, 'app.js')
         nodemon({
-            script: 'app.js',
-            exec: 'node --harmony app.js ' + arr.join(' '),
+            script: appFile,
+            exec: 'node --harmony ' + appFile + ' ' + arr.join(' '),
             watch: path,
             ext: 'json'
         }).on('restart', function(files) {
