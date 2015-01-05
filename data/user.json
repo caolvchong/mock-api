@@ -1,9 +1,14 @@
 [
     {
         "method": "post",
-        "url": "/login",
+        "url": "/users/login",
+        "delay": 2000,
         "response": {
             "ok": 1
+        },
+        "status": 400,
+        "error": {
+            "message": "用户名或密码错误"
         }
     },
     {
@@ -11,7 +16,7 @@
         "url": "/users/:id",
         "response": {
             "name": "tom",
-            "age": 28
+            "age": 29
         }
     }
 ]
