@@ -38,7 +38,7 @@ function readAPIs(app, path, config) {
                     });
                 });
             } else if (stat.isDirectory()) {
-                readAPIs(p)
+                readAPIs(app, p, config)
             }
         });
     return app;
