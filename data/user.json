@@ -16,7 +16,7 @@
         "url": "/users/:id",
         "response": {
             "id|number": "{{this.params.id}}",
-            "name": "tom",
+            "name": "{{this.query.name}}",
             "age": 29
         }
     }
