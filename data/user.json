@@ -15,6 +15,7 @@
         "method": "get",
         "url": "/users/:id",
         "response": {
+            "id|number": "{{this.params.id}}",
             "name": "tom",
             "age": 29
         }
