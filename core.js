@@ -5,6 +5,30 @@ var reg = {
     expression: /{{(.*?)}}/g,
     split: /\s*\|\s*/,
     json: /.+\.json$/
+};
+
+function parseResponse(res) {
+    for (var key in res) {
+        var val = res[key];
+        if(typeof val === 'object') {
+            parseResponse.call(this, val);
+        }
+        if (typeof val === 'string' && val.match(reg.expression)) {
+            var arr = key.split(reg.split);
+            if (arr[1]) {
+                res[arr[0]] = res[key];
+                delete res[key];
+                key = arr[0];
+            }
+            res[key] = val.replace(reg.expression, function (match, expression) {
+                return eval(expression);
+            }.bind(this));
+            if (arr[1] === 'number') {
+                res[key] = +res[key];
+            }
+        }
+    }
+    return res;
 }
 
 function readAPIs(app, path, config) {
@@ -39,29 +63,7 @@ function readAPIs(app, path, config) {
                             this.status = status;
                             this.body = api.error || {message: '默认异常'};
                         } else {
-                            var res = api.response || {};
-
-                            (function (res) {
-                                for (var key in res) {
-                                    var val = res[key];
-                                    if (typeof val === 'string' && val.match(reg.expression)) {
-                                        var arr = key.split(reg.split);
-                                        if (arr[1]) {
-                                            res[arr[0]] = res[key];
-                                            delete res[key];
-                                            key = arr[0];
-                                        }
-                                        res[key] = val.replace(reg.expression, function (match, expression) {
-                                            return eval(expression);
-                                        }.bind(this));
-                                        if (arr[1] === 'number') {
-                                            res[key] = +res[key];
-                                        }
-                                    }
-                                }
-                            }.bind(this))(res);
-
-                            this.body = res;
+                            this.body = parseResponse.call(this, api.response || {});
                         }
                     });
                 });
