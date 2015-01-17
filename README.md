@@ -5,6 +5,7 @@ mock-api
 [nvm]:      https://github.com/creationix/nvm       "Node.js 包管理器"
 [nodemon]:  https://github.com/remy/nodemon         "Node.js 程序运行监听热重启工具"
 [mock-api]: https://github.com/caolvchong/mock-api  "前端使用JSON模拟API工具"
+[koajs]:    http://koajs.com/#context               "Koa文档 - 请求上下文"
 
 ## 使用场景
 在前端开发中，您可能遇到这样的情景：
@@ -73,6 +74,38 @@ GET: /users/:id
 * **method**: 表示请求的类型，一般是 get、post、put、delete中的一种
 * **url**: 请求的路由
 * **response**: 返回的结果体
+
+json支持`{{ }}` 表达式，例如：
+
+```json
+[
+    {
+        "method": "get",
+        "url": "/users/:id",
+        "response": {
+            "id|number": "{{this.params.id}}",
+            "name": "tom",
+            "level": 3
+        }
+    }
+]
+```
+
+其中，response结构的key支持指定输出number，而不是默认的string（因为`{{ }}`表达式必须包在双引号中）。
+value中`{{ }}` 表达式常用支持的表达式有：
+
+```javascript
+// 路径参数
+this.params[key]
+
+// get参数
+this.query[key]
+
+// post参数
+this.body[key]
+```
+
+这里的this其实就是Koa的请求上下文对象，具体使用可以参考[koajs][]文档。
 
 如果需要模拟网络延迟或者请求失败，可以使用 **delay** 和 **status**、**error**，例如：
 
