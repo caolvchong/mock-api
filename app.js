@@ -2,6 +2,7 @@ var koa = require('koa');
 var koaBody = require('koa-body');
 var Router = require('koa-router');
 var cors = require('koa-cors');
+var serve = require('koa-static');
 var readAPIs = require('./core');
 
 var app = koa();
@@ -14,7 +15,8 @@ var params = {
     path: '',
     port: '',
     delay: '',
-    status: ''
+    status: '',
+    staticPath: ''
 };
 for(var i = 0, len = argv.length; i < len; i++) {
     var item = argv[i];
@@ -26,6 +28,9 @@ for(var i = 0, len = argv.length; i < len; i++) {
         }
     }
 }
+
+// 静态文件中间件
+app.use(serve(params.staticPath));
 
 readAPIs(app, params.path, {
     delay: +params.delay,
