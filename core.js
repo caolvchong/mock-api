@@ -5,7 +5,7 @@ var helper = require('./helper');
 var reg = {
     expression: /{{(.*?)}}/g,
     split: /\s*\|\s*/,
-    json: /.+\.json$/,
+    json: /^[^_].*\.json$/,
     js: /.+\.js$/
 };
 
