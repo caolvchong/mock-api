@@ -55,7 +55,7 @@ GET: /users/:id
     }
 ```
 
-新建一个目录，比如取做：restful。在该目录下建立一个json文件，比如：user.json，写入以下内容：
+新建一个目录，比如取做：restful。在该目录下建立一个json文件（文件名不以_开头，以_开头的json文件可以作为数据源使用），比如：user.json，写入以下内容：
 
 ```json
 [
@@ -145,7 +145,9 @@ module.exports = [{
 }];
 ```
 
-helper 是工具函数，目前提供`pagination`工具，返回如下结构数据：
+helper 是工具函数，目前提供:
+
+* `pagination`，模拟分页情况，返回如下结构数据：
 
 ```json
 {
@@ -158,7 +160,9 @@ helper 是工具函数，目前提供`pagination`工具，返回如下结构数�
 }
 ```
 
-这不是强制的，你可以使用nodejs能做到的所有功能。
+* `JSONCopy`，实现JSON深拷贝
+
+另外，你可以使用nodejs能做到的所有功能。
 
 然后执行：
 
@@ -178,16 +182,22 @@ mock-api serve /path/to/restful -p port
 
 注意，为了便于开发，建议将上面的 `http://localhost:10086` 进行配置，后期接入真实API则只需要修改一处配置即可。
 
-如果需要统一模拟慢速网络，可以使用** -d ** 参数：
+如果需要统一模拟慢速网络，可以使用 **-d** 参数：
 
 ```bash
 mock-api serve /path/to/restful -d 2000
 ```
 
-如果需要统一模拟异常，可以使用 ** -s ** 参数：
+如果需要统一模拟异常，可以使用 **-s** 参数：
 
 ```bash
 mock-api serve /path/to/restful -s 400
+```
+
+如果需要提供静态文件服务（例如一些图片的访问），可以使用 **-S** 参数，默认是在 serve 的路径下的 static 目录：
+
+```bash
+mock-api serve /path/to/restful -S /path/to/static
 ```
 
 命令行帮助可以通过以下命令查看：
