@@ -6,7 +6,7 @@ var nodemon = require('nodemon');
 var pck = require('./package.json');
 
 var defaults = {
-    port: 3001,
+    port: 10086,
     delay: 0,
     status: 200
 };
