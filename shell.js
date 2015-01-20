@@ -57,6 +57,7 @@ program
         console.log('    $ mock-api serve path/to/folder -p 8000');
         console.log('    $ mock-api serve path/to/folder -p 8000 -d 2000');
         console.log('    $ mock-api serve path/to/folder -s 400');
+        console.log('    $ mock-api serve path/to/folder -S path/to/static');
         console.log('');
     });
 
