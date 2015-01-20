@@ -8,7 +8,8 @@ var pck = require('./package.json');
 var defaults = {
     port: 10086,
     delay: 0,
-    status: 200
+    status: 200,
+    staticPath: './static'
 };
 
 program
@@ -18,8 +19,10 @@ program
     .option('-p, --port <port>', '服务器端口，默认' + defaults.port) // 服务端口
     .option('-d, --delay <delay>', '模拟网络延迟，默认不延迟') // 延迟返回，模仿网络延迟
     .option('-s, --status <status>', '返回的HTTP状态码，默认' + defaults.status) // 状态码
+    .option('-S, --staticPath <staticPath>', '静态文件服务目录，默认' + defaults.staticPath) // 静态文件服务目录
     .action(function (path, options) {
         path = pathUtil.resolve(process.cwd(), path || '.');
+        var staticPath = pathUtil.resolve(process.cwd(), options.staticPath || pathUtil.resolve(path, defaults.staticPath));
         var port = +options.port || defaults.port;
         var delay = +options.delay || defaults.delay;
         var status = +options.status || defaults.status;
@@ -27,7 +30,8 @@ program
             path: path,
             port: port,
             delay: delay,
-            status: status
+            status: status,
+            staticPath: staticPath
         };
         var arr = [];
         for (var key in params) {
