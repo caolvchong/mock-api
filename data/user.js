@@ -1,0 +1,153 @@
+var store = [{
+    id: 1,
+    name: 'tom'
+}, {
+    id: 2,
+    name: 'jerry'
+}, {
+    id: 3,
+    name: 'lucy'
+}, {
+    id: 4,
+    name: 'green'
+}, {
+    id: 5,
+    name: 'white'
+}, {
+    id: 6,
+    name: 'jay'
+}, {
+    id: 7,
+    name: 'dog'
+}, {
+    id: 8,
+    name: 'boom'
+}, {
+    id: 9,
+    name: 'rooney'
+}, {
+    id: 10,
+    name: 'giggs'
+}, {
+    id: 11,
+    name: 'meci'
+}, {
+    id: 12,
+    name: 'jack'
+}, {
+    id: 13,
+    name: 'jackon'
+}, {
+    id: 14,
+    name: 'brown'
+}, {
+    id: 15,
+    name: 'jon'
+}, {
+    id: 16,
+    name: 'jan'
+}, {
+    id: 17,
+    name: 'york'
+}, {
+    id: 18,
+    name: 'right'
+}, {
+    id: 19,
+    name: 'hey'
+}, {
+    id: 20,
+    name: 'jude'
+}, {
+    id: 21,
+    name: 'fun'
+}, {
+    id: 22,
+    name: 'cat'
+}, {
+    id: 23,
+    name: 'marry'
+}, {
+    id: 24,
+    name: 'terry'
+}, {
+    id: 25,
+    name: 'torrs'
+}, {
+    id: 26,
+    name: 'ice'
+}, {
+    id: 27,
+    name: 'pon'
+}, {
+    id: 28,
+    name: 'tommy'
+}, {
+    id: 29,
+    name: 'fly'
+}, {
+    id: 31,
+    name: 'tree'
+}, {
+    id: 32,
+    name: 'flower'
+}, {
+    id: 33,
+    name: 'winner'
+}, {
+    id: 34,
+    name: 'loser'
+}, {
+    id: 35,
+    name: 'apple'
+}, {
+    id: 36,
+    name: 'grass'
+}, {
+    id: 37,
+    name: 'water'
+}, {
+    id: 38,
+    name: 'fire'
+}, {
+    id: 39,
+    name: 'hole'
+}, {
+    id: 40,
+    name: 'hello'
+}, {
+    id: 41,
+    name: 'world'
+}, {
+    id: 43,
+    name: 'blue'
+}, {
+    id: 44,
+    name: 'color'
+}, {
+    id: 45,
+    name: 'sky'
+}, {
+    id: 46,
+    name: 'bird'
+}, {
+    id: 47,
+    name: 'baby'
+}, {
+    id: 48,
+    name: 'father'
+}, {
+    id: 49,
+    name: 'mother'
+}, {
+    id: 50,
+    name: 'son'
+}];
+
+module.exports = [{
+    method: 'get',
+    url: '/users',
+    response: function(helper) {
+        return helper.pagination(store, this.query);
+    }
+}];

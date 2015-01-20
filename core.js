@@ -1,16 +1,18 @@
 var fs = require('fs');
 var util = require('util');
+var helper = require('./helper');
 
 var reg = {
     expression: /{{(.*?)}}/g,
     split: /\s*\|\s*/,
-    json: /.+\.json$/
+    json: /.+\.json$/,
+    js: /.+\.js$/
 };
 
 function parseResponse(res) {
     for (var key in res) {
         var val = res[key];
-        if(typeof val === 'object') {
+        if (typeof val === 'object') {
             parseResponse.call(this, val);
         }
         if (typeof val === 'string' && val.match(reg.expression)) {
@@ -31,6 +33,16 @@ function parseResponse(res) {
     return res;
 }
 
+function getResult(val, scope) {
+    var result;
+    if (typeof val === 'function') {
+        result = val.call(scope, helper);
+    } else {
+        result = val;
+    }
+    return result;
+}
+
 function readAPIs(app, path, config) {
     var delay = config.delay;
     var status = config.status;
@@ -40,7 +52,9 @@ function readAPIs(app, path, config) {
         .forEach(function (file) {
             var p = path + '/' + file;
             var stat = fs.statSync(p);
-            if (stat.isFile() && file.match(reg.json) !== null) {
+            var isJson = file.match(reg.json) !== null;
+            var isJs = file.match(reg.js) !== null;
+            if (stat.isFile() && (isJs || isJson)) {
                 var apis = require(p);
                 if (!util.isArray(apis)) {
                     apis = [apis];
@@ -48,7 +62,7 @@ function readAPIs(app, path, config) {
                 apis.forEach(function (api) {
                     app[api.method](api.url, function*() {
                         if (api.delay) {
-                            delay = api.delay;
+                            delay = getResult(api.delay, this);
                         }
                         if (delay) {
                             yield function (done) {
@@ -57,13 +71,13 @@ function readAPIs(app, path, config) {
                         }
 
                         if (api.status) {
-                            status = api.status;
+                            status = getResult(api.status, this);
                         }
                         if (status && status !== 200) {
                             this.status = status;
-                            this.body = api.error || {message: '默认异常'};
+                            this.body = getResult(api.error, this) || {message: '默认异常'};
                         } else {
-                            this.body = parseResponse.call(this, api.response || {});
+                            this.body = parseResponse.call(this, getResult(api.response, this) || {});
                         }
                     });
                 });
