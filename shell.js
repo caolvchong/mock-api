@@ -38,7 +38,7 @@ program
             script: appFile,
             exec: 'node --harmony ' + appFile + ' ' + arr.join(' '),
             watch: path,
-            ext: 'json'
+            ext: 'json, js'
         }).on('restart', function (files) {
             files.forEach(function (file) {
                 var date = new Date();
