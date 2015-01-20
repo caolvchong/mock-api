@@ -148,6 +148,9 @@ module.exports = [{
     method: 'get',
     url: '/users',
     response: function(helper) {
-        return helper.pagination(store, this.query);
+        return helper.pagination(store, {
+            limit: this.query.limit,
+            offset: this.query.offset
+        });
     }
 }];
