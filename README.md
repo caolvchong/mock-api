@@ -128,6 +128,38 @@ this.body[key]
 ]
 ```
 
+`0.1.0` 版本后支持js方式，提供更大的控制力：
+
+```js
+var store = [...];
+
+module.exports = [{
+    method: 'get',
+    url: '/users',
+    response: function(helper) {
+        return helper.pagination(store, {
+            limit: this.query.limit,
+            offset: this.query.offset
+        });
+    }
+}];
+```
+
+helper 是工具函数，目前提供`pagination`工具，返回如下结构数据：
+
+```json
+{
+    "data": [...],
+    "pagination": {
+        "limit": 
+        "offset":
+        "total":
+    }
+}
+```
+
+这不是强制的，你可以使用nodejs能做到的所有功能。
+
 然后执行：
 
 ```bash
@@ -136,7 +168,7 @@ mock-api serve /path/to/restful
 
 上面的 `/path/to/restful` 是之前建立的restful目录的路径，可以是相对地址，也可以是绝对地址。
 
-前端开发便可以通过 http://localhost:3001/users/1 访问到该接口。[mock-api][]已经做了跨域处理，因此不存在跨域问题。
+前端开发便可以通过 http://localhost:10086/users/1 访问到该接口。[mock-api][]已经做了跨域处理，因此不存在跨域问题。
 
 如果需要定制端口，启动命令使用：
 
@@ -144,7 +176,7 @@ mock-api serve /path/to/restful
 mock-api serve /path/to/restful -p port
 ```
 
-注意，为了便于开发，建议将上面的 `http://localhost:3001` 进行配置，后期接入真实API则只需要修改一处配置即可。
+注意，为了便于开发，建议将上面的 `http://localhost:10086` 进行配置，后期接入真实API则只需要修改一处配置即可。
 
 如果需要统一模拟慢速网络，可以使用** -d ** 参数：
 
