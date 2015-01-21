@@ -18,12 +18,11 @@ var params = {
     status: '',
     staticPath: ''
 };
-for(var i = 0, len = argv.length; i < len; i++) {
-    var item = argv[i];
+for(var i = 2, len = argv.length; i < len; i++) {
+    var arr = argv[i].split(' ');
     for(var key in params) {
-        if(item == '--' + key) {
-            params[key] = argv[i + 1];
-            i++;
+        if(arr[0] == '--' + key) {
+            params[key] = arr[1];
             break;
         }
     }

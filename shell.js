@@ -40,9 +40,10 @@ program
         var appFile = pathUtil.resolve(__dirname, 'app.js')
         nodemon({
             script: appFile,
-            exec: 'node --harmony ' + appFile + ' ' + arr.join(' '),
+            args: arr,
+            nodeArgs: ['--harmony'],
             watch: path,
-            ext: 'json, js'
+            ext: 'json,js'
         }).on('restart', function (files) {
             files.forEach(function (file) {
                 var date = new Date();
