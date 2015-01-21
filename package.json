@@ -1,6 +1,6 @@
 {
   "name": "mock-api",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "use json files to mock apis for front-end development",
   "repository": {
     "type": "git",
