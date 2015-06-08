@@ -38,7 +38,7 @@ function getResult(val, scope) {
     if (typeof val === 'function') {
         result = val.call(scope, helper);
     } else {
-        result = val;
+        result = JSON.parse(JSON.stringify(val));
     }
     return result;
 }
